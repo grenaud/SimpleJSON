@@ -9,7 +9,7 @@ CFLAGS=-c -Wall
 LFLAGS=-lm
 
 # Source files
-LIBAR=src/libsimplejson.a
+LIBAR=obj/libsimplejson.a
 SOURCES=src/JSON.cpp src/JSONValue.cpp src/demo/nix-main.cpp src/demo/example.cpp src/demo/testcases.cpp
 HEADERS=src/JSON.h src/JSONValue.h
 OBJECTS=$(SOURCES:src/%.cpp=obj/%.o)
