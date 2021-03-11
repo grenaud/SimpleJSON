@@ -4,12 +4,17 @@ ifeq ($(CXX),)
 CXX := g++ #-g  -pg 
 endif
 
+ifeq ($(CC),)
+CC := gcc #-g  -pg 
+endif
+
 # Compile settings
-CFLAGS=-c -Wall
+CFLAGS=-c -Wall -fPIC
 LFLAGS=-lm
 
 # Source files
 LIBAR=obj/libsimplejson.a
+LIBARDL=obj/libsimplejson.so
 SOURCES=src/JSON.cpp src/JSONValue.cpp src/demo/nix-main.cpp src/demo/example.cpp src/demo/testcases.cpp
 HEADERS=src/JSON.h src/JSONValue.h
 OBJECTS=$(SOURCES:src/%.cpp=obj/%.o)
@@ -20,6 +25,9 @@ EXECUTABLE=JSONDemo
 
 all:	$(SOURCES) $(EXECUTABLE) $(LIBAR)
 
+dynamic: all
+	$(CXX) -shared -o $(LIBARDL)  $(OBJECTSAR)
+
 $(EXECUTABLE):	$(OBJECTS) 
 		$(CXX) $(LFLAGS) $(OBJECTS) -o $@
 
@@ -29,6 +37,7 @@ $(LIBAR):	$(EXECUTABLE)
 obj/%.o:	src/%.cpp $(HEADERS)
 		@test -d $(@D) || mkdir -p $(@D)
 		$(CXX) $(CFLAGS) $(@:obj/%.o=src/%.cpp) -o $@
+
 
 clean:
 		rm -f $(OBJECTS) $(EXECUTABLE) $(LIBAR)
