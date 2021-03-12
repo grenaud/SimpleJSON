@@ -8,6 +8,15 @@ ifeq ($(CC),)
 CC := gcc #-g  -pg 
 endif
 
+
+ifeq ($(OS),Windows_NT)
+	detectedOS := Windows
+	TESTCMD=if exist 
+else
+	detectedOS := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
+	TESTCMD=test -f 
+endif
+
 # Compile settings
 CFLAGS=-c -Wall -fPIC
 LFLAGS=-lm
@@ -42,3 +51,7 @@ obj/%.o:	src/%.cpp $(HEADERS)
 clean:
 		rm -f $(OBJECTS) $(EXECUTABLE) $(LIBAR)
 
+test:
+	@echo $(detectedOS)
+	$(TESTCMD) $(LIBAR)
+	$(TESTCMD) $(LIBARDL)
